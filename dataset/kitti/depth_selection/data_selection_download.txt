@@ -1,0 +1,11 @@
+Download manually selected validation and test data sets from:
+http://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction
+
+Unzip the archive in this folder.
+
+Folder structure:
+
+data_depth_annotated
+| - test_depth_completion_anonymous
+| - test_depth_prediction_anonymous
+| - val_selection_cropped

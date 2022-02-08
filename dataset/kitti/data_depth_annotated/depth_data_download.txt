@@ -1,0 +1,10 @@
+Download annotated depth maps data set from:
+http://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction
+
+Unzip the archive in this folder.
+
+Folder structure:
+
+data_depth_annotated
+| - train
+| - val
