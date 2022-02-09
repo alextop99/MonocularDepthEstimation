@@ -4,16 +4,21 @@ from ModelBlocks import *
 
 import numpy as np
 import cv2
+import os
+import datetime
 
 tf.random.set_seed(123)
 
 HEIGHT = 128
 WIDTH = 256
 LR = 0.0002
-EPOCHS = 10
+EPOCHS = 1
 BATCH_SIZE = 6
 
+# * Data Generator
+# * Reads data from the images loaded by the KittiDataset library and preprocesses them
 class DataGenerator(tf.keras.utils.Sequence):
+    # * Initialize the data generator with specific parameters
     def __init__(self, data, batch_size=6, dim=(370, 1240), n_channels=3, shuffle=True):
         self.data= data
         self.indices = self.data.index.tolist()
@@ -24,9 +29,11 @@ class DataGenerator(tf.keras.utils.Sequence):
         self.min_depth = 0.1
         self.on_epoch_end()
 
+    # * Get the number of batches
     def __len__(self):
         return int(np.ceil(len(self.data) / self.batch_size))
 
+    # * Get a specific batch
     def __getitem__(self, index):
         if (index + 1) * self.batch_size > len(self.indices):
             self.batch_size = len(self.indices) - index * self.batch_size
@@ -44,6 +51,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         if self.shuffle == True:
             np.random.shuffle(self.index)
 
+    # * Load images from paths
     def load(self, image_path, depth_path):
         image_ = cv2.imread(image_path)
         image_ = cv2.cvtColor(image_, cv2.COLOR_BGR2RGB)
@@ -57,6 +65,7 @@ class DataGenerator(tf.keras.utils.Sequence):
 
         return image_, depth_map
 
+    # * Get image paths and load them
     def data_generation(self, batch):
         x = np.empty((self.batch_size, *self.dim, self.n_channels))
         y = np.empty((self.batch_size, *self.dim, 1))
@@ -153,6 +162,8 @@ class DepthEstimationModel(tf.keras.Model):
             "loss": self.loss_metric.result(),
         }
 
+    # TODO: Generate the semantic segmentation of the images and pass them to a layer (x is the batch of images)
+    # ? Should I concatenate the semantic segmenation to the input of the layer?
     def call(self, x):
         c1, p1 = self.downscale_blocks[0](x)
         c2, p2 = self.downscale_blocks[1](p1)
@@ -181,7 +192,9 @@ def main():
         learning_rate=LR,
         amsgrad=False,
     )
+    
     model = DepthEstimationModel()
+    
     # Define the loss function
     cross_entropy = tf.keras.losses.SparseCategoricalCrossentropy(
         from_logits=True, reduction="none"
@@ -198,12 +211,26 @@ def main():
     validation_loader = DataGenerator(
         data=valData.reset_index(drop="true"), batch_size=BATCH_SIZE, dim=(HEIGHT, WIDTH)
     )
+    
+    checkpoint_path = "checkpoints/cp.ckpt"
+    
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                 save_weights_only=True,
+                                                 verbose=1)
+    
+    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+    
     model.fit(
         train_loader,
         epochs=EPOCHS,
         validation_data=validation_loader,
+        callbacks=[cp_callback, tensorboard_callback]
     )
-
+    
+    model.save_weights("model/weights.h5")
+    model.save("model/model.tf", save_format='tf')
+    print(model.summary())
 
 if __name__ == "__main__":
     main()
