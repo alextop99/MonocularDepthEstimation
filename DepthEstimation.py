@@ -4,16 +4,19 @@ from ModelBlocks import *
 
 import numpy as np
 import cv2
-import os
 import datetime
 
 tf.random.set_seed(123)
 
-HEIGHT = 128
-WIDTH = 256
+#HEIGHT = 128
+HEIGHT = 256
+#WIDTH = 256
+WIDTH = 1024
 LR = 0.0002
-EPOCHS = 1
-BATCH_SIZE = 6
+#EPOCHS = 10
+EPOCHS = 30
+#BATCH_SIZE = 6
+BATCH_SIZE = 16
 
 # * Data Generator
 # * Reads data from the images loaded by the KittiDataset library and preprocesses them
@@ -164,6 +167,7 @@ class DepthEstimationModel(tf.keras.Model):
 
     # TODO: Generate the semantic segmentation of the images and pass them to a layer (x is the batch of images)
     # ? Should I concatenate the semantic segmenation to the input of the layer?
+    # ? Should the shapes be the same?
     def call(self, x):
         c1, p1 = self.downscale_blocks[0](x)
         c2, p2 = self.downscale_blocks[1](p1)
@@ -180,6 +184,9 @@ class DepthEstimationModel(tf.keras.Model):
         return self.conv_layer(u4)
 
 def main():
+    #mirrored_strategy = tf.distribute.MirroredStrategy()
+    #mirrored_strategy = tf.distribute.MirroredStrategy(cross_device_ops = tf.distribute.HierarchicalCopyAllReduce())
+    #mirrored_strategy = tf.distribute.MirroredStrategy(cross_device_ops = tf.distribute.ReductionToOneDevice())
     gpus = tf.config.list_physical_devices('GPU')
     if gpus:
         try:
@@ -192,6 +199,9 @@ def main():
         learning_rate=LR,
         amsgrad=False,
     )
+    
+    #with mirrored_strategy.scope():
+        #model = DepthEstimationModel()
     
     model = DepthEstimationModel()
     
