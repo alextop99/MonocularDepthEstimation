@@ -4,7 +4,6 @@ from ModelBlocks import *
 
 import numpy as np
 import cv2
-import os
 import datetime
 
 tf.random.set_seed(123)
@@ -12,13 +11,13 @@ tf.random.set_seed(123)
 HEIGHT = 128
 WIDTH = 256
 LR = 0.0002
-EPOCHS = 1
+EPOCHS = 10
 BATCH_SIZE = 6
 
-# * Data Generator
-# * Reads data from the images loaded by the KittiDataset library and preprocesses them
+#* Data Generator
+#* Reads data from the images loaded by the KittiDataset library and preprocesses them
 class DataGenerator(tf.keras.utils.Sequence):
-    # * Initialize the data generator with specific parameters
+    #* Initialize the data generator with specific parameters
     def __init__(self, data, batch_size=6, dim=(370, 1240), n_channels=3, shuffle=True):
         self.data= data
         self.indices = self.data.index.tolist()
@@ -29,11 +28,11 @@ class DataGenerator(tf.keras.utils.Sequence):
         self.min_depth = 0.1
         self.on_epoch_end()
 
-    # * Get the number of batches
+    #* Get the number of batches
     def __len__(self):
         return int(np.ceil(len(self.data) / self.batch_size))
 
-    # * Get a specific batch
+    #* Get a specific batch
     def __getitem__(self, index):
         if (index + 1) * self.batch_size > len(self.indices):
             self.batch_size = len(self.indices) - index * self.batch_size
@@ -51,7 +50,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         if self.shuffle == True:
             np.random.shuffle(self.index)
 
-    # * Load images from paths
+    #* Load images from paths
     def load(self, image_path, depth_path):
         image_ = cv2.imread(image_path)
         image_ = cv2.cvtColor(image_, cv2.COLOR_BGR2RGB)
@@ -65,7 +64,7 @@ class DataGenerator(tf.keras.utils.Sequence):
 
         return image_, depth_map
 
-    # * Get image paths and load them
+    #* Get image paths and load them
     def data_generation(self, batch):
         x = np.empty((self.batch_size, *self.dim, self.n_channels))
         y = np.empty((self.batch_size, *self.dim, 1))
@@ -85,19 +84,19 @@ class DepthEstimationModel(tf.keras.Model):
         self.l1_loss_weight = 0.1
         self.edge_loss_weight = 0.9
         self.loss_metric = tf.keras.metrics.Mean(name="loss")
-        f = [16, 32, 64, 128, 256]
+        filters = [16, 32, 64, 128, 256]
         self.downscale_blocks = [
-            DownscaleBlock(f[0]),
-            DownscaleBlock(f[1]),
-            DownscaleBlock(f[2]),
-            DownscaleBlock(f[3]),
+            DownscaleBlock(filters[0]),
+            DownscaleBlock(filters[1]),
+            DownscaleBlock(filters[2]),
+            DownscaleBlock(filters[3]),
         ]
-        self.bottle_neck_block = BottleNeckBlock(f[4])
+        self.bottle_neck_block = BottleNeckBlock(filters[4])
         self.upscale_blocks = [
-            UpscaleBlock(f[3]),
-            UpscaleBlock(f[2]),
-            UpscaleBlock(f[1]),
-            UpscaleBlock(f[0]),
+            UpscaleBlock(filters[3]),
+            UpscaleBlock(filters[2]),
+            UpscaleBlock(filters[1]),
+            UpscaleBlock(filters[0]),
         ]
         self.conv_layer = layers.Conv2D(1, (1, 1), padding="same", activation="tanh")
 
@@ -162,22 +161,38 @@ class DepthEstimationModel(tf.keras.Model):
             "loss": self.loss_metric.result(),
         }
 
-    # TODO: Generate the semantic segmentation of the images and pass them to a layer (x is the batch of images)
-    # ? Should I concatenate the semantic segmenation to the input of the layer?
+    #TODO: Generate the semantic segmentation of the images and pass them to a layer (x is the batch of images)
+    #? Should I concatenate the semantic segmenation to the input of the layer?
+    #? Should the shapes be the same?
     def call(self, x):
-        c1, p1 = self.downscale_blocks[0](x)
-        c2, p2 = self.downscale_blocks[1](p1)
-        c3, p3 = self.downscale_blocks[2](p2)
-        c4, p4 = self.downscale_blocks[3](p3)
+        #* inputs - (6, 128, 256, 3)
+        down1, pooled1 = self.downscale_blocks[0](x)
+        #* down1 - (6, 128, 256, 16)
+        #* pooled1 - (6, 64, 128, 16)
+        down2, pooled2 = self.downscale_blocks[1](pooled1)
+        #* down2 - (6, 64, 128, 32)
+        #* pooled2 - (6, 32, 64, 32)
+        down3, pooled3 = self.downscale_blocks[2](pooled2)
+        #* down3 - (6, 32, 64, 64)
+        #* pooled3 - (6, 16, 32, 64)
+        down4, pooled4 = self.downscale_blocks[3](pooled3)
+        #* down4 - (6, 16, 32, 128)
+        #* pooled4 - (6, 8, 16, 128)
+        
+        bn = self.bottle_neck_block(pooled4)
+        #* (6, 8, 16, 256)
 
-        bn = self.bottle_neck_block(p4)
+        up1 = self.upscale_blocks[0](bn, down4)
+        #* up1 - (6, 16, 32, 128)
+        up2 = self.upscale_blocks[1](up1, down3)
+        #* up2 - (6, 32, 64, 64)
+        up3 = self.upscale_blocks[2](up2, down2)
+        #* up3 -  (6, 64, 128, 32)
+        up4 = self.upscale_blocks[3](up3, down1)
+        #* up4 -  (6, 128, 256, 16)
 
-        u1 = self.upscale_blocks[0](bn, c4)
-        u2 = self.upscale_blocks[1](u1, c3)
-        u3 = self.upscale_blocks[2](u2, c2)
-        u4 = self.upscale_blocks[3](u3, c1)
-
-        return self.conv_layer(u4)
+        #* return - (6, 128, 256, 1)
+        return self.conv_layer(up4)
 
 def main():
     gpus = tf.config.list_physical_devices('GPU')
