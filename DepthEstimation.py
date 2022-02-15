@@ -5,6 +5,7 @@ from ModelBlocks import *
 import numpy as np
 import cv2
 import datetime
+from matplotlib import pyplot as plt
 
 tf.random.set_seed(123)
 
@@ -135,20 +136,28 @@ class DepthEstimationModel(tf.keras.Model):
 
     @property
     def metrics(self):
-        return [self.loss_metric]
+        return [self.loss_metric] + self.compiled_metrics.metrics 
 
     def train_step(self, batch_data):
         input, target = batch_data
         with tf.GradientTape() as tape:
             pred = self(input, training=True)
             loss = self.calculate_loss(target, pred)
-
+        
         gradients = tape.gradient(loss, self.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
+        
         self.loss_metric.update_state(loss)
-        return {
+        self.compiled_metrics.update_state(target, pred)
+        
+        res = {}
+        custom_metrics = {
             "loss": self.loss_metric.result(),
         }
+        compile_metrics = {m.name: m.result() for m in self.metrics}
+        res.update(custom_metrics)
+        res.update(compile_metrics)
+        return res
 
     def test_step(self, batch_data):
         input, target = batch_data
@@ -157,9 +166,16 @@ class DepthEstimationModel(tf.keras.Model):
         loss = self.calculate_loss(target, pred)
 
         self.loss_metric.update_state(loss)
-        return {
+        self.compiled_metrics.update_state(target, pred)
+        
+        res = {}
+        custom_metrics = {
             "loss": self.loss_metric.result(),
         }
+        compile_metrics = {m.name: m.result() for m in self.metrics}
+        res.update(custom_metrics)
+        res.update(compile_metrics)
+        return res
 
     #TODO: Generate the semantic segmentation of the images and pass them to a layer (x is the batch of images)
     #? Should I concatenate the semantic segmenation to the input of the layer?
@@ -215,7 +231,7 @@ def main():
         from_logits=True, reduction="none"
     )
     # Compile the model
-    model.compile(optimizer, loss=cross_entropy)
+    model.compile(optimizer, loss=cross_entropy, metrics=['mse', 'mae', tf.keras.metrics.RootMeanSquaredError()])
 
     kittiDataset = KittiDataset("dataset/kitti/")
     trainData, valData = kittiDataset.load_train_val()
@@ -236,7 +252,7 @@ def main():
     log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
     
-    model.fit(
+    history = model.fit(
         train_loader,
         epochs=EPOCHS,
         validation_data=validation_loader,
@@ -246,6 +262,11 @@ def main():
     model.save_weights("model/weights.h5")
     model.save("model/model.tf", save_format='tf')
     print(model.summary())
+    
+    plt.plot(history.history['mse'])
+    plt.plot(history.history['mae'])
+    plt.plot(history.history['root_mean_squared_error'])
+    plt.show()
 
 if __name__ == "__main__":
     main()
