@@ -139,3 +139,7 @@ dataset/kitti/raw_data/*
 # Checkpoints and logs
 checkpoints/
 logs/
+
+# Local Files
+backup/
+old/

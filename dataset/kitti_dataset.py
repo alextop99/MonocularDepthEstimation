@@ -20,7 +20,7 @@ class KittiDataset():
                         filePath = re.findall(r"(\d{4}\_\d{2}\_\d{2}\_drive\_\d{4}\_sync)", os.path.join(root, file))[0]
                         fileName = file
                         dataTrain += [{
-                            "image" : self.path + "raw_data/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depht.png", "png"),
+                            "image" : self.path + "raw_data/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depth.png", ".png"),
                             "depth_map" : os.path.join(root, fileName)
                         }]
         
@@ -31,7 +31,7 @@ class KittiDataset():
                         filePath = re.findall(r"(\d{4}\_\d{2}\_\d{2}\_drive\_\d{4}\_sync)", os.path.join(root, file))[0]
                         fileName = file
                         dataVal += [{
-                            "image" : self.path + "raw_data/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depht.png", "png"),
+                            "image" : self.path + "raw_data/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depth.png", ".png"),
                             "depth_map" : os.path.join(root, fileName)
                         }]
         
