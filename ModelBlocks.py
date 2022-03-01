@@ -43,7 +43,7 @@ class UpscaleBlock(layers.Layer):
         self, filters, kernel_size=(3, 3), padding="same", strides=1, **kwargs
     ):
         super().__init__(**kwargs)
-        self.us = layers.UpSampling2D((2, 2))
+        self.us = layers.UpSampling2D((2, 2), interpolation='bilinear')
         self.convA = layers.Conv2D(filters, kernel_size, strides, padding)
         self.convB = layers.Conv2D(filters, kernel_size, strides, padding)
         self.reluA = layers.LeakyReLU(alpha=0.2)
