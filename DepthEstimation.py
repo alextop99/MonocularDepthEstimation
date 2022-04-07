@@ -13,7 +13,7 @@ WIDTH = 256
 HEIGHT = 64
 
 LR = 0.001
-EPOCHS = 1
+EPOCHS = 10
 BATCH_SIZE = 6
 
 #* Data Generator
