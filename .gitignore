@@ -132,6 +132,7 @@ dmypy.json
 dataset/kitti/data_depth_annotated/*
 dataset/kitti/depth_selection/*
 dataset/kitti/raw_data/*
+dataset/kitti/semantic_segmentation/*
 !dataset/kitti/raw_data/raw_data_downloader.sh
 !dataset/kitti/data_depth_annotated/depth_data_download.txt
 !dataset/kitti/depth_selection/data_selection_download.txt
