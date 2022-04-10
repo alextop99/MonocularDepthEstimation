@@ -27,10 +27,19 @@ ___
 Using DenseDepth model from the third step and the model from the Second Step I created a custom cleaner model that allowed me to train a basic model.
 
 ___
+## Fifth Step:
+Pre-generate semantic segmented images using ERFNet (https://github.com/Eromera/erfnet_pytorch)
+
+___
+## Sixth Step:
+Modify DataGenerator into a separate class. Create new augmented DataGenerator and KittiDataset classes that extend the original classes.
+
+___
+## Seventh Step:
+Create the new augumented depth estimation model based on the original depth estimation model.
+
+___
 ## TO DO:
-- Train a better model
+- Train a better model (High resolution training)
 - Evaluation Script
-- Semantic segmentation testing script
-- First Augumented Depth Estimation Model
-- Second Augumented Depth Estimation Model
-- High resolution training
+- Second Augumented Depth Estimation Model?
