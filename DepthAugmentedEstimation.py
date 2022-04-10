@@ -13,7 +13,7 @@ LR = 0.001
 EPOCHS = 10
 BATCH_SIZE = 6
 
-class DepthEstimationModel(tf.keras.Model):
+class DepthEstimationAugmentedModel(tf.keras.Model):
     def __init__(self):
         super().__init__()
         filters = [16, 32, 64, 128, 256]
@@ -82,7 +82,7 @@ def main():
         amsgrad=False,
     )
     
-    model = DepthEstimationModel()
+    model = DepthEstimationAugmentedModel()
     
     # Compile the model
     model.compile(optimizer, loss=depth_loss_function)
