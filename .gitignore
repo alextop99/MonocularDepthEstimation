@@ -139,6 +139,7 @@ dataset/kitti/semantic_segmentation/*
 
 # Checkpoints and logs
 checkpoints/
+checkpointsAug/
 logs/
 
 # Local Files
