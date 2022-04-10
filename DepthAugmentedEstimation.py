@@ -111,8 +111,8 @@ def main():
         callbacks=[cp_callback]
     )
     
-    model.save_weights("modelAug/weightsAug.h5")
-    model.save("modelAug/modelAug.tf", save_format='tf')
+    model.save_weights("model/weightsAug.h5")
+    model.save("model/modelAug.tf", save_format='tf')
 
 if __name__ == "__main__":
     main()
