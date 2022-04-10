@@ -1,9 +1,11 @@
-from dataset.kitti_dataset import KittiDatasetAugmented
 import tensorflow as tf
+from matplotlib import pyplot as plt
+
+import sys
+sys.path.append('../')
 from ModelBlocks import *
 from DataGenerator import DataGeneratorAugmented
-from matplotlib import pyplot as plt
-import numpy as np
+from dataset.kitti_dataset import KittiDatasetAugmented
 
 tf.random.set_seed(123)
 
@@ -16,7 +18,7 @@ BATCH_SIZE = 6
 
 def main():
 
-    kittiDataset = KittiDatasetAugmented("dataset/kitti/")
+    kittiDataset = KittiDatasetAugmented("../dataset/kitti/")
     trainData, valData = kittiDataset.load_train_val()
 
     train_loader = DataGeneratorAugmented(
