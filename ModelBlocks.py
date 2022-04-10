@@ -98,3 +98,30 @@ class BottleNeckBlock(layers.Layer):
         #* x - (6, x, y, filters)
         
         return x
+
+class AugmentedBlock(layers.Layer):
+    def __init__(
+        self, filters, kernel_size=(3, 3), padding="same", strides=1, **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.convA = layers.Conv2D(filters, kernel_size, strides, padding)
+        self.convB = layers.Conv2D(filters, kernel_size, strides, padding)
+        self.reluA = layers.LeakyReLU(alpha=0.2)
+        self.reluB = layers.LeakyReLU(alpha=0.2)
+        self.conc = layers.Concatenate()
+
+    def call(self, x, aug):
+        #* x - (6, x, y, z)
+        #* aug - (6, x, y, w)
+        concat = self.conc([x, aug])
+        #* x - (6, x, y, z + w)
+        x = self.convA(concat)
+        #* x - (6, x, y, filters)
+        x = self.reluA(x)
+        #* x - (6, x, y, filters)
+        x = self.convB(x)
+        #* x - (6, x, y, filters)
+        x = self.reluB(x)
+        #* x - (6, x, y, filters)
+        
+        return x
