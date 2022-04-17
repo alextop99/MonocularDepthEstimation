@@ -12,7 +12,6 @@ BATCH_SIZE = 6
 
 def main():
     model = tf.keras.models.load_model('model/model.tf', custom_objects = {"depth_loss_function": depth_loss_function})
-    modelAug = tf.keras.models.load_model('model/modelAug.tf', custom_objects = {"depth_loss_function": depth_loss_function})
     
     kittiDataset = KittiDataset("dataset/kitti/")
     valData = kittiDataset.load_val()
@@ -42,6 +41,8 @@ def main():
             delta2Arr = np.append(delta2Arr, delta2)
             delta3Arr = np.append(delta3Arr, delta3)
 
+    modelAug = tf.keras.models.load_model('model/modelAug.tf', custom_objects = {"depth_loss_function": depth_loss_function})
+    
     kittiDatasetAugmented = KittiDatasetAugmented("dataset/kitti/")
     valDataAugmented = kittiDatasetAugmented.load_val()
 
@@ -52,7 +53,7 @@ def main():
     maeAugArr = imaeAugArr = abs_relAugArr = sq_relAugArr = mseAugArr = rmseAugArr = rmse_logAugArr = irmseAugArr = delta1AugArr = delta2AugArr = delta3AugArr = np.array([])
     
     for i in range(0, validationAugmented_loader.__len__()):
-        print(i, validation_loader.__len__())
+        print(i, validationAugmented_loader.__len__())
         (x, y) = validationAugmented_loader.__getitem__(i)
         y_pred = modelAug.predict(x)
         
@@ -70,7 +71,7 @@ def main():
             delta2AugArr = np.append(delta2AugArr, delta2)
             delta3AugArr = np.append(delta3AugArr, delta3)
     
-    print("Original Model")
+    print("\nOriginal Model")
     print("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
     print("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}".format(maeArr.mean(), imaeArr.mean(), abs_relArr.mean(), sq_relArr.mean(), mseArr.mean(), rmseArr.mean(), rmse_logArr.mean(), irmseArr.mean(), delta1Arr.mean(), delta2Arr.mean(), delta3Arr.mean()))
     
