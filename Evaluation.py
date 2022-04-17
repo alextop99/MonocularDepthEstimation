@@ -12,20 +12,23 @@ BATCH_SIZE = 6
 
 def main():
     model = tf.keras.models.load_model('model/model.tf', custom_objects = {"depth_loss_function": depth_loss_function})
+    modelAug = tf.keras.models.load_model('model/modelAug.tf', custom_objects = {"depth_loss_function": depth_loss_function})
     
-    kittiDataset = KittiDataset("dataset/kitti/")
+    kittiDataset = KittiDatasetAugmented("dataset/kitti/")
     valData = kittiDataset.load_val()
 
-    validation_loader = DataGenerator(
+    validation_loader = DataGeneratorAugmented(
         data=valData, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT)
     )
     
     maeArr = imaeArr = abs_relArr = sq_relArr = mseArr = rmseArr = rmse_logArr = irmseArr = delta1Arr = delta2Arr = delta3Arr = np.array([])
+    maeAugArr = imaeAugArr = abs_relAugArr = sq_relAugArr = mseAugArr = rmseAugArr = rmse_logAugArr = irmseAugArr = delta1AugArr = delta2AugArr = delta3AugArr = np.array([])
     
     for i in range(0, validation_loader.__len__()):
         print(i, validation_loader.__len__())
         (x, y) = validation_loader.__getitem__(i)
-        y_pred = model.predict(x)
+        y_pred = model.predict(x[0])
+        y_predAug = modelAug.predict(x)
         
         for j in range(0, BATCH_SIZE):
             mae, imae, abs_rel, sq_rel, mse, rmse, rmse_log, irmse, delta1, delta2, delta3 = compute_errors(y[j], y_pred[j])
@@ -41,24 +44,7 @@ def main():
             delta2Arr = np.append(delta2Arr, delta2)
             delta3Arr = np.append(delta3Arr, delta3)
 
-    modelAug = tf.keras.models.load_model('model/modelAug.tf', custom_objects = {"depth_loss_function": depth_loss_function})
-    
-    kittiDatasetAugmented = KittiDatasetAugmented("dataset/kitti/")
-    valDataAugmented = kittiDatasetAugmented.load_val()
-
-    validationAugmented_loader = DataGeneratorAugmented(
-        data=valDataAugmented, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT)
-    )
-    
-    maeAugArr = imaeAugArr = abs_relAugArr = sq_relAugArr = mseAugArr = rmseAugArr = rmse_logAugArr = irmseAugArr = delta1AugArr = delta2AugArr = delta3AugArr = np.array([])
-    
-    for i in range(0, validationAugmented_loader.__len__()):
-        print(i, validationAugmented_loader.__len__())
-        (x, y) = validationAugmented_loader.__getitem__(i)
-        y_pred = modelAug.predict(x)
-        
-        for j in range(0, BATCH_SIZE):
-            mae, imae, abs_rel, sq_rel, mse, rmse, rmse_log, irmse, delta1, delta2, delta3 = compute_errors(y[j], y_pred[j])
+            mae, imae, abs_rel, sq_rel, mse, rmse, rmse_log, irmse, delta1, delta2, delta3 = compute_errors(y[j], y_predAug[j])
             maeAugArr = np.append(maeAugArr, mae)
             imaeAugArr = np.append(imaeAugArr, imae)
             abs_relAugArr = np.append(abs_relAugArr, abs_rel)
