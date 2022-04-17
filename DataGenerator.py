@@ -80,7 +80,7 @@ class DataGeneratorAugmented(DataGenerator):
         
         semantic_segmentation = cv2.imread(semantic_segmenation_path)
         semantic_segmentation = cv2.cvtColor(semantic_segmentation, cv2.COLOR_BGR2RGB)
-        semantic_segmentation = cv2.resize(semantic_segmentation, self.dim)
+        semantic_segmentation = cv2.resize(semantic_segmentation, self.dim, interpolation = cv2.INTER_NEAREST)
         semantic_segmentation = tf.image.convert_image_dtype(semantic_segmentation, tf.float32)
 
         depth_map = cv2.imread(depth_path, cv2.IMREAD_GRAYSCALE)
