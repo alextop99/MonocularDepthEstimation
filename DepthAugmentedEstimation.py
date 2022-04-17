@@ -8,6 +8,7 @@ tf.random.set_seed(123)
 
 WIDTH = 256
 HEIGHT = 64
+# 1024 x 256
 
 LR = 0.001
 EPOCHS = 10
@@ -33,39 +34,37 @@ class DepthEstimationAugmentedModel(tf.keras.Model):
         self.augmented_block = AugmentedBlock(filters[0])
         self.conv_layer = layers.Conv2D(1, (1, 1), padding="same", activation="sigmoid")
 
-    #TODO: Generate the semantic segmentation of the images and pass them to a layer (x is the batch of images)
-    #? Should I concatenate the semantic segmenation to the input of the layer?
     def call(self, x):
-        #* inputs - (2, 6, 64, 256, 3)
+        #* inputs - (2, 6, x, y, 3)
         down1, pooled1 = self.downscale_blocks[0](x[0])
-        #* down1 - (6, 64, 256, 16)
-        #* pooled1 - (6, 32, 128, 16)
+        #* down1 - (6, x, y, 16)
+        #* pooled1 - (6, x/2, y/2, 16)
         down2, pooled2 = self.downscale_blocks[1](pooled1)
-        #* down2 - (6, 32, 128, 32)
-        #* pooled2 - (6, 16, 64, 32)
+        #* down2 - (6, x/2, y/2, 32)
+        #* pooled2 - (6, x/4, y/4, 32)
         down3, pooled3 = self.downscale_blocks[2](pooled2)
-        #* down3 - (6, 16, 64, 64)
-        #* pooled3 - (6, 8, 32, 64)
+        #* down3 - (6, x/4, y/4, 64)
+        #* pooled3 - (6, x/8, y/8, 64)
         down4, pooled4 = self.downscale_blocks[3](pooled3)
-        #* down4 - (6, 8, 32, 128)
-        #* pooled4 - (6, 4, 16, 128)
+        #* down4 - (6, x/8, y/8, 128)
+        #* pooled4 - (6, x/16, y/16, 128)
         
         bn = self.bottle_neck_block(pooled4)
-        #* (6, 4, 16, 256)
+        #* (6, x/16, y/16, 256)
 
         up1 = self.upscale_blocks[0](bn, down4)
-        #* up1 - (6, 8, 32, 128)
+        #* up1 - (6, x/8, y/8, 128)
         up2 = self.upscale_blocks[1](up1, down3)
-        #* up2 - (6, 16, 64, 64)
+        #* up2 - (6, x/4, y/4, 64)
         up3 = self.upscale_blocks[2](up2, down2)
-        #* up3 -  (6, 32, 128, 32)
+        #* up3 -  (6, x/2, y/2, 32)
         up4 = self.upscale_blocks[3](up3, down1)
-        #* up4 -  (6, 64, 256, 16)
+        #* up4 -  (6, x, y, 16)
 
-        #* aug - (6, 64, 256, 16)
+        #* aug - (6, x, y, 16)
         aug = self.augmented_block(up4, x[1])
 
-        #* return - (6, 64, 256, 1)
+        #* return - (6, x, y, 1)
         return self.conv_layer(aug)
 
 def main():

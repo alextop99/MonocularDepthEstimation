@@ -36,6 +36,24 @@ class KittiDataset():
                         }]
         
         return pd.DataFrame(dataTrain), pd.DataFrame(dataVal)
+    
+    def load_val(self):
+        valPath = self.path + "data_depth_annotated/val"
+
+        dataVal = []
+        
+        for root, _, files in os.walk(valPath):
+            if "image_02" in root:
+                for file in files:
+                    if "depth" in file:
+                        filePath = re.findall(r"(\d{4}\_\d{2}\_\d{2}\_drive\_\d{4}\_sync)", os.path.join(root, file))[0]
+                        fileName = file
+                        dataVal += [{
+                            "image" : self.path + "raw_data/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depth.png", ".png"),
+                            "depth_map" : os.path.join(root, fileName)
+                        }]
+        
+        return pd.DataFrame(dataVal)
 
 class KittiDatasetAugmented(KittiDataset):
     def __init__(self, path):
@@ -73,6 +91,25 @@ class KittiDatasetAugmented(KittiDataset):
                         }]
         
         return pd.DataFrame(dataTrain), pd.DataFrame(dataVal)
+    
+    def load_val(self):
+        valPath = self.path + "data_depth_annotated/val"
+
+        dataVal = []
+        
+        for root, _, files in os.walk(valPath):
+            if "image_02" in root:
+                for file in files:
+                    if "depth" in file:
+                        filePath = re.findall(r"(\d{4}\_\d{2}\_\d{2}\_drive\_\d{4}\_sync)", os.path.join(root, file))[0]
+                        fileName = file
+                        dataVal += [{
+                            "image" : self.path + "raw_data/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depth.png", ".png"),
+                            "semantic_segmentation" : self.path + "semantic_segmentation/" + filePath[:10] + "/" + filePath + "/image_02/data/" + fileName.replace("_depth.png", ".png"),
+                            "depth_map" : os.path.join(root, fileName)
+                        }]
+        
+        return pd.DataFrame(dataVal)
 
 class KittiDatasetGenerate(KittiDataset):
     def __init__(self, path):

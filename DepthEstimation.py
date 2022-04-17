@@ -36,33 +36,33 @@ class DepthEstimationModel(tf.keras.Model):
     #? Should I concatenate the semantic segmenation to the input of the layer?
     #? Should the shapes be the same?
     def call(self, x):
-        #* inputs - (6, 128, 256, 3)
+        #* inputs - (6, x, y, 3)
         down1, pooled1 = self.downscale_blocks[0](x)
-        #* down1 - (6, 128, 256, 16)
-        #* pooled1 - (6, 64, 128, 16)
+        #* down1 - (6, x, y, 16)
+        #* pooled1 - (6, x/2, y/2, 16)
         down2, pooled2 = self.downscale_blocks[1](pooled1)
-        #* down2 - (6, 64, 128, 32)
-        #* pooled2 - (6, 32, 64, 32)
+        #* down2 - (6, x/2, y/2, 32)
+        #* pooled2 - (6, x/4, y/4, 32)
         down3, pooled3 = self.downscale_blocks[2](pooled2)
-        #* down3 - (6, 32, 64, 64)
-        #* pooled3 - (6, 16, 32, 64)
+        #* down3 - (6, x/4, y/4, 64)
+        #* pooled3 - (6, x/8, y/8, 64)
         down4, pooled4 = self.downscale_blocks[3](pooled3)
-        #* down4 - (6, 16, 32, 128)
-        #* pooled4 - (6, 8, 16, 128)
+        #* down4 - (6, x/8, y/8, 128)
+        #* pooled4 - (6, x/16, y/16, 128)
         
         bn = self.bottle_neck_block(pooled4)
-        #* (6, 8, 16, 256)
+        #* (6, x/16, y/16, 256)
 
         up1 = self.upscale_blocks[0](bn, down4)
-        #* up1 - (6, 16, 32, 128)
+        #* up1 - (6, x/8, y/8, 128)
         up2 = self.upscale_blocks[1](up1, down3)
-        #* up2 - (6, 32, 64, 64)
+        #* up2 - (6, x/4, y/4, 64)
         up3 = self.upscale_blocks[2](up2, down2)
-        #* up3 -  (6, 64, 128, 32)
+        #* up3 -  (6, x/2, y/2, 32)
         up4 = self.upscale_blocks[3](up3, down1)
-        #* up4 -  (6, 128, 256, 16)
+        #* up4 -  (6, x, y, 16)
 
-        #* return - (6, 128, 256, 1)
+        #* return - (6, x, y, 1)
         return self.conv_layer(up4)
 
 def main():
