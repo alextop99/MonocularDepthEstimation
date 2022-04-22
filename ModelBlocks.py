@@ -1,7 +1,6 @@
 from tensorflow.keras import layers
 
 class DownscaleBlock(layers.Layer):
-    #* Stride 1 and padding = "same" => output_shape = input_shape
     def __init__(
         self, filters, kernel_size=(3, 3), padding="same", strides=1, **kwargs
     ):

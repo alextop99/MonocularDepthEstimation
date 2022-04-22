@@ -5,21 +5,19 @@ from Loss import depth_loss_function
 from dataset.kitti_dataset import KittiDatasetAugmented
 from DataGenerator import DataGeneratorAugmented
 from CityscapeClasses import CityscapeClasses, CityscapeClassNames
+from Configuration import WIDTH, HEIGHT, BATCH_SIZE, NB_CLASSES
 
-WIDTH = 256
-HEIGHT = 64
-
-BATCH_SIZE = 6
-NB_CLASSES = 20
-
+# Create an empty array for each class to hold the pixel values
 classResult = []
 for i in range(0, NB_CLASSES):
     classResult.append([])
 
 def main():
+    # Import both models
     model = tf.keras.models.load_model('model/model.tf', custom_objects = {"depth_loss_function": depth_loss_function})
     modelAug = tf.keras.models.load_model('model/modelAug.tf', custom_objects = {"depth_loss_function": depth_loss_function})
     
+    # Import the dataset and create a generator
     kittiDataset = KittiDatasetAugmented("dataset/kitti/")
     valData = kittiDataset.load_val()
 
@@ -27,6 +25,8 @@ def main():
         data=valData, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT)
     )
     
+    # For each input use both models to predict the output
+    # Using the semantic segmentation group the results by class
     for i in range(0, validation_loader.__len__()):
         print(i, validation_loader.__len__())
         (x, y) = validation_loader.__getitem__(i)
@@ -36,6 +36,7 @@ def main():
         x_interp = np.interp(x, (0, 1), (0, 255))
         x_interp = x_interp.astype(np.uint16)
         
+        # Associate each pixel value to its respective class
         for k in range(0, BATCH_SIZE):
             for i in range(0, HEIGHT):
                 for j in range(0, WIDTH):
@@ -47,8 +48,9 @@ def main():
                         pass
     
     print("Finished processing images")
-    file = open("output.txt", "w")
-       
+    file = open("Class Evaluation Results.txt", "w")
+    
+    # Calculate the errors for each class and write to file   
     for k in range(0, NB_CLASSES):
         print("Class: " + str(k))
         if(len(classResult[k]) > 0):
@@ -73,8 +75,7 @@ def main():
             file.write("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}\n".format(mae, imae, abs_rel, sq_rel, mse, rmse, rmse_log, irmse, delta1, delta2, delta3))
             file.write("\n")
     
-    file.close()
-    
+    file.close()   
     
 if __name__ == "__main__":
     main()

@@ -2,13 +2,9 @@ import tensorflow as tf
 import numpy as np
 from Errors import compute_errors
 from Loss import depth_loss_function
-from dataset.kitti_dataset import KittiDataset, KittiDatasetAugmented
-from DataGenerator import DataGenerator, DataGeneratorAugmented
-
-WIDTH = 256
-HEIGHT = 64
-
-BATCH_SIZE = 6
+from dataset.kitti_dataset import KittiDatasetAugmented
+from DataGenerator import DataGeneratorAugmented
+from Configuration import WIDTH, HEIGHT, BATCH_SIZE
 
 def main():
     model = tf.keras.models.load_model('model/model.tf', custom_objects = {"depth_loss_function": depth_loss_function})
@@ -57,13 +53,15 @@ def main():
             delta2AugArr = np.append(delta2AugArr, delta2)
             delta3AugArr = np.append(delta3AugArr, delta3)
     
-    print("\nOriginal Model")
-    print("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
-    print("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}".format(maeArr.mean(), imaeArr.mean(), abs_relArr.mean(), sq_relArr.mean(), mseArr.mean(), rmseArr.mean(), rmse_logArr.mean(), irmseArr.mean(), delta1Arr.mean(), delta2Arr.mean(), delta3Arr.mean()))
+    file = open("Evaluation Results.txt", "w")
     
-    print("\nAugmented Model")
-    print("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
-    print("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}".format(maeAugArr.mean(), imaeAugArr.mean(), abs_relAugArr.mean(), sq_relAugArr.mean(), mseAugArr.mean(), rmseAugArr.mean(), rmse_logAugArr.mean(), irmseAugArr.mean(), delta1AugArr.mean(), delta2AugArr.mean(), delta3AugArr.mean()))
+    file.write("Original Model\n")
+    file.write("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}\n".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
+    file.write("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}\n".format(maeArr.mean(), imaeArr.mean(), abs_relArr.mean(), sq_relArr.mean(), mseArr.mean(), rmseArr.mean(), rmse_logArr.mean(), irmseArr.mean(), delta1Arr.mean(), delta2Arr.mean(), delta3Arr.mean()))
+    
+    file.write("\nAugmented Model")
+    file.write("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}\n".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
+    file.write("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}\n".format(maeAugArr.mean(), imaeAugArr.mean(), abs_relAugArr.mean(), sq_relAugArr.mean(), mseAugArr.mean(), rmseAugArr.mean(), rmse_logAugArr.mean(), irmseAugArr.mean(), delta1AugArr.mean(), delta2AugArr.mean(), delta3AugArr.mean()))
     
 if __name__ == "__main__":
     main()
