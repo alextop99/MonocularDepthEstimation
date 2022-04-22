@@ -38,6 +38,8 @@ def main():
         
         # Associate each pixel value to its respective class
         for k in range(0, BATCH_SIZE):
+            if(np.mean(x[0][k]) == 0): 
+                continue
             for i in range(0, HEIGHT):
                 for j in range(0, WIDTH):
                     try:

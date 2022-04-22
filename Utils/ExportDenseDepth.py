@@ -4,10 +4,13 @@ import skimage
 import numpy as np
 from scipy.sparse.linalg import spsolve
 import scipy
-from dataset.kitti_dataset import KittiDatasetGenerate
 from matplotlib import pyplot as plt
 import threading
 import os
+
+import sys
+sys.path.append('../')
+from dataset.kitti_dataset import KittiDatasetGenerate
 
 THREADS = 12
 SIZE = None

@@ -70,6 +70,7 @@ class DataGeneratorAugmented(DataGenerator):
     #* Initialize the data generator with specific parameters
     def __init__(self, data, batch_size=6, dim=(1240, 370), n_channels=3, shuffle=True):
         super().__init__(data, batch_size, dim, n_channels, shuffle)
+        self.orig_batch_size = batch_size
 
     #* Load images from paths
     def load(self, image_path, semantic_segmenation_path, depth_path):
@@ -92,8 +93,8 @@ class DataGeneratorAugmented(DataGenerator):
 
     #* Get image paths and load them
     def data_generation(self, batch):
-        x = np.empty((self.batch_size, 2, *(self.dim[::-1]), self.n_channels))
-        y = np.empty((self.batch_size, *(self.dim[::-1]), 1))
+        x = np.empty((self.orig_batch_size, 2, *(self.dim[::-1]), self.n_channels))
+        y = np.empty((self.orig_batch_size, *(self.dim[::-1]), 1))
 
         for i, batch_id in enumerate(batch):
             x[i,], y[i,] = self.load(

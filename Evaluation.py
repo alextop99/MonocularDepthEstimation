@@ -27,6 +27,8 @@ def main():
         y_predAug = modelAug.predict(x)
         
         for j in range(0, BATCH_SIZE):
+            if(np.mean(x[0][j]) == 0): 
+                continue
             mae, imae, abs_rel, sq_rel, mse, rmse, rmse_log, irmse, delta1, delta2, delta3 = compute_errors(y[j], y_pred[j])
             maeArr = np.append(maeArr, mae)
             imaeArr = np.append(imaeArr, imae)
@@ -59,7 +61,7 @@ def main():
     file.write("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}\n".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
     file.write("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}\n".format(maeArr.mean(), imaeArr.mean(), abs_relArr.mean(), sq_relArr.mean(), mseArr.mean(), rmseArr.mean(), rmse_logArr.mean(), irmseArr.mean(), delta1Arr.mean(), delta2Arr.mean(), delta3Arr.mean()))
     
-    file.write("\nAugmented Model")
+    file.write("\nAugmented Model\n")
     file.write("{:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}, {:>10}\n".format('mae', 'imae', 'abs_rel', 'sq_rel', 'mse', 'rmse', 'rmse_log', 'irmse', 'delta1', 'delta2', 'delta3'))
     file.write("{:10.4f}, {:10.4f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}, {:10.3f}\n".format(maeAugArr.mean(), imaeAugArr.mean(), abs_relAugArr.mean(), sq_relAugArr.mean(), mseAugArr.mean(), rmseAugArr.mean(), rmse_logAugArr.mean(), irmseAugArr.mean(), delta1AugArr.mean(), delta2AugArr.mean(), delta3AugArr.mean()))
     
