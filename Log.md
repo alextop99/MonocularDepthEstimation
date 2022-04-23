@@ -39,7 +39,14 @@ ___
 Create the new augumented depth estimation model based on the original depth estimation model.
 
 ___
+## Eighth Step:
+Evaluation scripts done. Evaluation can be done overall or by classes.
+
+___
+## Nineth Step:
+Changed configuration for better training and exported initial results.
+
+___
 ## TO DO:
 - Train a better model (High resolution training)
-- Evaluation Script
 - Second Augumented Depth Estimation Model?
