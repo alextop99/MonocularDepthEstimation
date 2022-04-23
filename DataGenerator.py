@@ -6,7 +6,7 @@ import numpy as np
 #* Reads data from the images loaded by the KittiDataset library and preprocesses them
 class DataGenerator(tf.keras.utils.Sequence):
     #* Initialize the data generator with specific parameters
-    def __init__(self, data, batch_size=6, dim=(1240, 370), n_channels=3, shuffle=True):
+    def __init__(self, data, batch_size=6, dim=(1240, 370), n_channels=3, shuffle=True, evaluate = False):
         self.data= data
         self.indices = self.data.index.tolist()
         self.dim = dim
@@ -15,6 +15,8 @@ class DataGenerator(tf.keras.utils.Sequence):
         self.shuffle = shuffle
         self.min_depth = 0.1
         self.on_epoch_end()
+        self.evaluate = evaluate
+        self.orig_batch_size = batch_size
 
     #* Get the number of batches
     def __len__(self):
@@ -53,8 +55,12 @@ class DataGenerator(tf.keras.utils.Sequence):
 
     #* Get image paths and load them
     def data_generation(self, batch):
-        x = np.empty((self.batch_size, *(self.dim[::-1]), self.n_channels))
-        y = np.empty((self.batch_size, *(self.dim[::-1]), 1))
+        batch_size = self.batch_size
+        if self.evaluate:
+            batch_size = self.orig_batch_size
+        
+        x = np.empty((batch_size, *(self.dim[::-1]), self.n_channels))
+        y = np.empty((batch_size, *(self.dim[::-1]), 1))
 
         for i, batch_id in enumerate(batch):
             x[i,], y[i,] = self.load(
@@ -68,9 +74,8 @@ class DataGenerator(tf.keras.utils.Sequence):
 #* Reads data from the images loaded by the KittiDataset library and preprocesses them
 class DataGeneratorAugmented(DataGenerator):
     #* Initialize the data generator with specific parameters
-    def __init__(self, data, batch_size=6, dim=(1240, 370), n_channels=3, shuffle=True):
-        super().__init__(data, batch_size, dim, n_channels, shuffle)
-        self.orig_batch_size = batch_size
+    def __init__(self, data, batch_size=6, dim=(1240, 370), n_channels=3, shuffle=True, evaluate = False):
+        super().__init__(data, batch_size, dim, n_channels, shuffle, evaluate)
 
     #* Load images from paths
     def load(self, image_path, semantic_segmenation_path, depth_path):
@@ -93,8 +98,12 @@ class DataGeneratorAugmented(DataGenerator):
 
     #* Get image paths and load them
     def data_generation(self, batch):
-        x = np.empty((self.orig_batch_size, 2, *(self.dim[::-1]), self.n_channels))
-        y = np.empty((self.orig_batch_size, *(self.dim[::-1]), 1))
+        batch_size = self.batch_size
+        if self.evaluate:
+            batch_size = self.orig_batch_size
+        
+        x = np.empty((batch_size, 2, *(self.dim[::-1]), self.n_channels))
+        y = np.empty((batch_size, *(self.dim[::-1]), 1))
 
         for i, batch_id in enumerate(batch):
             x[i,], y[i,] = self.load(

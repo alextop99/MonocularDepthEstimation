@@ -14,7 +14,7 @@ def main():
     valData = kittiDataset.load_val()
 
     validation_loader = DataGeneratorAugmented(
-        data=valData, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT)
+        data=valData, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT), evaluate=True
     )
     
     maeArr = imaeArr = abs_relArr = sq_relArr = mseArr = rmseArr = rmse_logArr = irmseArr = delta1Arr = delta2Arr = delta3Arr = np.array([])

@@ -22,7 +22,7 @@ def main():
     valData = kittiDataset.load_val()
 
     validation_loader = DataGeneratorAugmented(
-        data=valData, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT)
+        data=valData, batch_size=BATCH_SIZE, dim=(WIDTH, HEIGHT), evaluate=True
     )
     
     # For each input use both models to predict the output
