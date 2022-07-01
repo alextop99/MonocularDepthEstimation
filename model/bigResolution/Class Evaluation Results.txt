@@ -1,0 +1,171 @@
+Class: 0 Road
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+32507.5551,     0.0594,   5176.202,      2.572,     48.200,      6.655,      0.501,      0.119,      0.452,      0.718,      0.824
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+34311.5051,     0.0565,   5517.710,      2.677,     47.319,      6.643,      0.501,      0.111,      0.433,      0.701,      0.812
+
+Class: 1 Sidewalk
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+33679.4985,     0.0507,   3991.243,      3.545,    131.162,      9.538,      0.461,      0.091,      0.465,      0.718,      0.831
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+30666.3715,     0.0432,   3964.082,      3.146,    133.402,      9.591,      0.442,      0.083,      0.450,      0.731,      0.846
+
+Class: 2 Building
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+23494.2654,     0.0167,   1418.802,     20.105,   1568.815,     34.359,      0.516,      0.034,      0.380,      0.673,      0.826
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+16918.8203,     0.0179,   1249.449,     18.547,   1860.012,     37.825,      0.554,      0.036,      0.314,      0.589,      0.778
+
+Class: 3 Wall
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 4 Fence
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 5 Pole
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 6 Traffic Light
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+18840.5295,     0.0154,    971.624,     23.857,   2660.054,     44.553,      0.516,      0.020,      0.377,      0.637,      0.786
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+16088.6046,     0.0148,    919.880,     22.740,   2966.636,     48.239,      0.534,      0.019,      0.305,      0.584,      0.759
+
+Class: 7 Traffic Sign
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+23719.6881,     0.0192,   1527.460,     22.676,   1952.027,     39.425,      0.554,      0.035,      0.333,      0.594,      0.761
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+20058.7773,     0.0195,   1518.123,     19.491,   2038.570,     40.150,      0.557,      0.034,      0.307,      0.568,      0.746
+
+Class: 8 Vegetation
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+14307.1082,     0.0281,    992.288,     12.565,   1454.644,     35.169,      0.579,      0.065,      0.316,      0.583,      0.770
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+10872.5627,     0.0274,    903.212,     14.471,   1778.748,     39.533,      0.604,      0.063,      0.262,      0.523,      0.730
+
+Class: 9 Terrain
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+24745.1587,     0.0641,   3278.268,      4.768,    287.332,     13.273,      0.548,      0.120,      0.420,      0.669,      0.784
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+22037.9451,     0.0572,   3326.608,      4.267,    251.257,     13.117,      0.521,      0.112,      0.407,      0.673,      0.796
+
+Class: 10 Sky
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+10110.0415,     0.0073,    525.074,     12.231,   1654.292,     37.207,      0.359,      0.012,      0.423,      0.786,      0.925
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+ 6293.8639,     0.0085,    469.026,     15.633,   2221.687,     44.000,      0.433,      0.013,      0.298,      0.684,      0.872
+
+Class: 11 Person
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+25270.5656,     0.0390,   2880.850,     12.637,   1351.967,     30.430,      0.491,      0.078,      0.427,      0.690,      0.830
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+23966.5972,     0.0391,   2787.719,     10.817,   1305.367,     30.441,      0.495,      0.078,      0.413,      0.677,      0.812
+
+Class: 12 Rider
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 13 Car
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+32684.2975,     0.0469,   3419.533,      9.138,    609.607,     22.618,      0.530,      0.106,      0.417,      0.683,      0.813
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+20187.2181,     0.0597,   2290.551,      8.306,    763.978,     25.002,      0.589,      0.128,      0.393,      0.653,      0.775
+
+Class: 14 Truck
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 15 Bus
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 16 Train
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 17 Motorcycle
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Class: 18 Bicycle
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+       nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan,        nan
+

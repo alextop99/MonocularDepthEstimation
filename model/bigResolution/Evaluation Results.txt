@@ -1,0 +1,7 @@
+Original Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+22931.5015,     0.0365,   2537.842,      9.565,    912.752,     27.861,      0.529,      0.092,      0.380,      0.661,      0.813
+
+Augmented Model
+       mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
+19401.2420,     0.0375,   2412.938,     10.393,   1124.370,     31.509,      0.558,      0.094,      0.337,      0.613,      0.780
