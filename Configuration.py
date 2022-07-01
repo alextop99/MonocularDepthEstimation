@@ -1,6 +1,6 @@
 # Image dimmensions
-WIDTH = 512
-HEIGHT = 128
+WIDTH = 256
+HEIGHT = 64
 
 # Model configuration
 LR = 0.001

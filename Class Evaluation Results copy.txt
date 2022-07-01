@@ -1,11 +1,11 @@
 Class: 0 Road
 Original Model
        mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
-36941.3645,     0.0557,   5192.442,      2.673,     51.383,      7.168,      0.512,      0.121,      0.409,      0.699,      0.813
+32507.5551,     0.0594,   5176.202,      2.572,     48.200,      6.655,      0.501,      0.119,      0.452,      0.718,      0.824
 
 Augmented Model
        mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
-34734.9401,     0.0578,   5347.044,      2.580,     44.949,      6.704,      0.522,      0.122,      0.436,      0.700,      0.836
+34311.5051,     0.0565,   5517.710,      2.677,     47.319,      6.643,      0.501,      0.111,      0.433,      0.701,      0.812
 
 Class: 1 Sidewalk
 Original Model
@@ -104,7 +104,7 @@ Original Model
 
 Augmented Model
        mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
-23966.5972,     0.0391,   2787.719,     10.817,   1305.367,     30.421,      0.495,      0.078,      0.413,      0.677,      0.812
+23966.5972,     0.0391,   2787.719,     10.817,   1305.367,     30.441,      0.495,      0.078,      0.413,      0.677,      0.812
 
 Class: 12 Rider
 Original Model
@@ -118,11 +118,11 @@ Augmented Model
 Class: 13 Car
 Original Model
        mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
-32684.2975,     0.0469,   3419.533,      9.138,    763.978,     25.002,      0.589,      0.128,      0.417,      0.683,      0.813
+32684.2975,     0.0469,   3419.533,      9.138,    609.607,     22.618,      0.530,      0.106,      0.417,      0.683,      0.813
 
 Augmented Model
        mae,       imae,    abs_rel,     sq_rel,        mse,       rmse,   rmse_log,      irmse,     delta1,     delta2,     delta3
-20187.2181,     0.0597,   2290.551,      8.306,    609.607,     22.618,      0.530,      0.106,      0.393,      0.653,      0.775
+20187.2181,     0.0597,   2290.551,      8.306,    763.978,     25.002,      0.589,      0.128,      0.393,      0.653,      0.775
 
 Class: 14 Truck
 Original Model
